@@ -106,22 +106,6 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/llFlip"
-                        android:layout_width="@dimen/dp32"
-                        android:layout_height="@dimen/dp32"
-                        android:background="@drawable/drawable_bg_radial_selector_opacity"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorTransparent"
-                            app:srcCompat="@drawable/ic_flip" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/llFlash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -358,6 +342,23 @@
                         android:background="@drawable/drawable_bg_solid_circle_green_hundred" />
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:id="@+id/llFlip"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="@dimen/dp32"
+                    android:background="@drawable/drawable_bg_radial_selector_opacity"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorTransparent"
+                        app:srcCompat="@drawable/ic_flip" />
+
+                </LinearLayout>
+
 
                 <RelativeLayout
                     android:id="@+id/relCancel"
@@ -508,4 +509,5 @@
         </LinearLayout>
 
     </RelativeLayout>
+
 </RelativeLayout>

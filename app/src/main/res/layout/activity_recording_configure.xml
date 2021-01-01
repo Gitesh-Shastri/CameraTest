@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -37,11 +38,6 @@
                 android:layout_height="200dp"/>
 
         </RelativeLayout>
-
-
-
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,9 +88,12 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_small"
                     app:srcCompat="@drawable/ic_close" />
-                <View
+                <TextView
+                    android:gravity="center"
+                    android:text="Preview"
+                    android:textColor="@color/white"
                     android:layout_width="1dp"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1" />
                 <TextView
                     android:layout_width="80dp"
@@ -530,5 +529,34 @@
             android:layout_height="@dimen/dp50"
             android:layout_alignParentBottom="true"
             android:background="@color/colorOpacity60" />
+
+        <androidx.cardview.widget.CardView
+            android:visibility="gone"
+            android:id="@+id/progress_card"
+            android:layout_centerInParent="true"
+            app:cardCornerRadius="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
     </RelativeLayout>
+
+    <ja.burhanrashid52.photoeditor.PhotoEditorView
+        android:id="@+id/photoEditorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:photo_src="@color/transparent" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

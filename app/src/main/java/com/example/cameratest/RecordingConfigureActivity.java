@@ -1,14 +1,20 @@
 package com.example.cameratest;
 
+import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.SurfaceTexture;
+import android.graphics.Typeface;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Surface;
@@ -19,27 +25,44 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.daasuu.mp4compose.composer.Mp4Composer;
+import com.daasuu.mp4compose.filter.GlFilterGroup;
+import com.daasuu.mp4compose.filter.GlWatermarkFilter;
+import com.example.cameratest.videoTrimmer.view.ProgressBarView;
 import com.example.cameratest.videocrop.VideoCropActivity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public class RecordingConfigureActivity extends BaseActivity implements View.OnClickListener {
+import ja.burhanrashid52.photoeditor.GradientDrawableWithColor;
+import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
+import ja.burhanrashid52.photoeditor.PhotoEditor;
+import ja.burhanrashid52.photoeditor.PhotoEditorView;
+import ja.burhanrashid52.photoeditor.TextStyleBuilder;
+import ja.burhanrashid52.photoeditor.ViewType;
+
+public class RecordingConfigureActivity extends BaseActivity implements View.OnClickListener, OnPhotoEditorListener, EmojiBSFragment.EmojiListener {
     CoordinatorLayout coordinatorLayout;
     TextureView textureView;
 
     RelativeLayout relContainer;
 
 
-    LinearLayout llVolumeMatch;
+    LinearLayout llVolumeMatch, llText, llSticker;
     TextView tvVoiceStart, tvMediaSoundStart;
     SeekBar voiceSeekBar, mediaSoundSeekBar;
 
@@ -51,6 +74,8 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
     LinearLayout llCrop, llRotate, llColor, llVolume, llTrim;
     TextView btnDone;
 
+    PhotoEditor mPhotoEditor;
+    PhotoEditorView mPhotoEditorView;
     List<String> colorEffectNameList = new ArrayList<>();
     List<String> colorEffectList = new ArrayList<>();
 
@@ -61,10 +86,11 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
     private int CHOOSE_TRACK = 2001;
     private int CROP_VIDEO = 2002;
 
-
     MediaPlayer mediaPlayerBackground;
 
     int textureWidth = 0, textureHeight = 0;
+    Typeface mWonderFont;
+    private EmojiBSFragment mEmojiBSFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,19 +107,49 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
         }
     }
 
+    private void handleIntentImage(ImageView source) {
+        Intent intent = getIntent();
+        if (intent != null) {
+            String intentType = intent.getType();
+            if (intentType != null && intentType.startsWith("image/")) {
+                Uri imageUri = intent.getData();
+                if (imageUri != null) {
+                    source.setImageURI(imageUri);
+                }
+            }
+        }
+    }
+
     private void setLayouts() {
         try {
             getLayoutInflater().inflate(R.layout.activity_recording_configure,baseContainer);
             declaration();
             setupMedia();
+            mPhotoEditorView = findViewById(R.id.photoEditorView);
+            handleIntentImage(mPhotoEditorView.getSource());
+            mWonderFont = Typeface.createFromAsset(getAssets(), "arial.ttf");
+            mPhotoEditor = new PhotoEditor.Builder(this, mPhotoEditorView)
+                    .setPinchTextScalable(true) // set flag to make text scalable when pinch
+                    .setDefaultTextTypeface(mWonderFont)
+                    .build(); // build photo editor sdk
+            mPhotoEditor.setOnPhotoEditorListener(this);
+            Bitmap bitmapEmpty = Bitmap.createBitmap(1280, 1960, Bitmap.Config.ARGB_8888);
+            mPhotoEditorView.getSource().setImageBitmap(bitmapEmpty);
         } catch (Exception e) {
             Lib.logError(e);
         }
     }
 
+    CardView progress_card;
+    ProgressBar progress_bar;
 
     private void declaration() {
         try {
+            progress_card     = findViewById(R.id.progress_card);
+            progress_bar      = findViewById(R.id.progress_bar);
+            llText            = findViewById(R.id.llText);
+            llSticker         = findViewById(R.id.llSticker);
+            mPhotoEditorView  = findViewById(R.id.photoEditorView);
             coordinatorLayout = findViewById(R.id.coordinatorLayout);
             textureView = findViewById(R.id.textureView);
             relContainer = findViewById(R.id.relContainer);
@@ -234,6 +290,46 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                 }
             });
 
+            llText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    textEditorDialogFragment = TextEditorDialogFragment.show(RecordingConfigureActivity.this);
+                    textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
+                        @Override
+                        public void onDone(String inputText, int colorCode, int mBackGroundColor, String current_style, Typeface font_family, int center_counter) {
+                            final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+                            if (mBackGroundColor != 1) {
+                                GradientDrawableWithColor gradientDrawable = new GradientDrawableWithColor();
+                                gradientDrawable.setCornerRadius(10);
+                                gradientDrawable.setColor(mBackGroundColor);
+                                styleBuilder.withBackgroundDrawable(gradientDrawable);
+                            }
+                            try {
+                                switch (current_style) {
+                                    case "Bold":
+                                        styleBuilder.withTextFont(Typeface.create(font_family, Typeface.BOLD));
+                                        break;
+                                    case "Italic":
+                                        styleBuilder.withTextFont(Typeface.create(font_family, Typeface.ITALIC));
+                                        break;
+                                    default:
+                                        styleBuilder.withTextFont(Typeface.create(font_family, Typeface.NORMAL));
+                                        break;
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            styleBuilder.withTextColor(colorCode);
+                            if (center_counter == 1 || center_counter == 2) {
+                                mPhotoEditor.addText(" " + inputText.trim() + " ", styleBuilder, center_counter);
+                            } else {
+                                mPhotoEditor.addText(" " + inputText.trim() + " ", styleBuilder);
+                            }
+                        }
+                    });
+                }
+            });
+
             if ( Constants.FILE_DOWNLOADED_NAME.equalsIgnoreCase("")) {
                 mediaSoundSeekBar.setProgress(0);
                 mediaSoundSeekBar.setEnabled(false);
@@ -243,6 +339,15 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                 mediaSoundSeekBar.setProgress(100);
             }
 
+            mEmojiBSFragment = new EmojiBSFragment();
+            mEmojiBSFragment.setEmojiListener(this);
+
+            llSticker.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mEmojiBSFragment.show(getSupportFragmentManager(), mEmojiBSFragment.getTag());
+                }
+            });
         } catch (Exception e) {
             Lib.logError(e);
         }
@@ -551,9 +656,9 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                     Constants.RECORDING_VOLUME_1 = String.valueOf(volume1);
                     Constants.RECORDING_VOLUME_2 = String.valueOf(volume2);
 
-
-                    startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
-                    finish();
+                    saveImage();
+//                    startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
+//                    finish();
                     break;
                 case R.id.textureView:
                     if (llContainer.getVisibility() == View.VISIBLE && !isEditorTrayOpened) {
@@ -854,4 +959,246 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
             mediaPlayerBackground.pause();
     }
 
+    TextEditorDialogFragment textEditorDialogFragment;
+
+    @Override
+    public void onEditTextChangeListener(View rootView, String text, int colorCode) {
+        textEditorDialogFragment =
+                TextEditorDialogFragment.show(this, text.trim(), colorCode);
+        textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
+            @Override
+            public void onDone(String inputText, int colorCode, int mBackGroundColor, String current_style, Typeface font_family, int center_counter) {
+                final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+                if (mBackGroundColor != 1) {
+                    GradientDrawableWithColor gradientDrawable = new GradientDrawableWithColor();
+                    gradientDrawable.setCornerRadius(10);
+                    gradientDrawable.setColor(mBackGroundColor);
+                    styleBuilder.withBackgroundDrawable(gradientDrawable);
+                }
+                try {
+                    switch (current_style) {
+                        case "Bold":
+                            styleBuilder.withTextFont(Typeface.create(font_family, Typeface.BOLD));
+                            break;
+                        case "Italic":
+                            styleBuilder.withTextFont(Typeface.create(font_family, Typeface.ITALIC));
+                            break;
+                        default:
+                            styleBuilder.withTextFont(Typeface.create(font_family, Typeface.NORMAL));
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                styleBuilder.withTextColor(colorCode);
+                if (center_counter == 1 || center_counter == 2) {
+                    mPhotoEditor.addText(" " + inputText.trim() + " ", styleBuilder, center_counter);
+                } else {
+                    mPhotoEditor.addText(" " + inputText.trim() + " ", styleBuilder);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onEditTextChangeListener(View rootView, String text, int colorCode, int backGroundColor) {
+        textEditorDialogFragment =
+                TextEditorDialogFragment.show(this, text.trim(), colorCode, backGroundColor);
+        textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
+            @Override
+            public void onDone(String inputText, int colorCode, int mBackGroundColor, String current_style, Typeface font_family, int center_counter) {
+                final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+                if (mBackGroundColor != 1) {
+                    GradientDrawableWithColor gradientDrawable = new GradientDrawableWithColor();
+                    gradientDrawable.setCornerRadius(10);
+                    gradientDrawable.setColor(mBackGroundColor);
+                    styleBuilder.withBackgroundDrawable(gradientDrawable);
+                }
+                try {
+                    switch (current_style) {
+                        case "Bold":
+                            styleBuilder.withTextFont(Typeface.create(font_family, Typeface.BOLD));
+                            break;
+                        case "Italic":
+                            styleBuilder.withTextFont(Typeface.create(font_family, Typeface.ITALIC));
+                            break;
+                        default:
+                            styleBuilder.withTextFont(Typeface.create(font_family, Typeface.NORMAL));
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                styleBuilder.withTextColor(colorCode);
+                if (center_counter == 1 || center_counter == 2) {
+                    mPhotoEditor.addText(" " + inputText.trim() + " ", styleBuilder, center_counter);
+                } else {
+                    mPhotoEditor.addText(" " + inputText.trim() + " ", styleBuilder);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onAddViewListener(ViewType viewType, int numberOfAddedViews) {
+
+    }
+
+    @Override
+    public void onRemoveViewListener(ViewType viewType, int numberOfAddedViews) {
+
+    }
+
+    @Override
+    public void onStartViewChangeListener(ViewType viewType) {
+
+    }
+
+    @Override
+    public void onStopViewChangeListener(ViewType viewType) {
+
+    }
+
+    @Override
+    public void onEmojiClick(String emojiUnicode) {
+        mPhotoEditor.addEmoji(emojiUnicode);
+    }
+
+    private void saveImage() {
+        File sdCard = Environment.getExternalStorageDirectory();
+        File dir = new File(sdCard.getAbsolutePath() + "/limelite/images");
+
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File(dir, "/" + System.currentTimeMillis() + ".png");
+        try {
+            file.createNewFile();
+            mPhotoEditor.clearHelperBox();
+            mPhotoEditorView.setDrawingCacheEnabled(true);
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(Constants.RECORDED_FILE_NAME);
+            Bitmap drawing = null;
+            try {
+                int width = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+                int height = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+                drawing = resize(mPhotoEditorView.getDrawingCache(), width, height);
+                retriever.release();
+                if (width > height)
+                    Constants.IS_PORTRAIT = false;
+                else
+                    Constants.IS_PORTRAIT = true;
+                Constants.VIDEO_DIMENSION_RATIO = (double) height / (double) width;
+                if (Constants.VIDEO_DIMENSION_RATIO > 1)
+                    Constants.VIDEO_DIMENSION_RATIO = (double) width / (double) height;
+
+            } catch (Exception e) {
+                Lib.logError(e);
+            }
+            if (drawing != null) {
+                Bitmap bitmap = BitmapUtil.removeTransparency(drawing, drawing.getWidth(), drawing.getHeight());
+                try {
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    out.flush();
+                    out.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dir = new File(sdCard.getAbsolutePath() + "/limelite/videos");
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                final File sticker_file = new File(dir, "/sticker_file" + System.currentTimeMillis() + ".mp4");
+                Bitmap bmThumbnail = BitmapFactory.decodeFile(file.getAbsolutePath());
+                progress_card.setVisibility(View.VISIBLE);
+                new Mp4Composer(Constants.RECORDED_FILE_NAME, sticker_file.getAbsolutePath())
+                        .filter(new GlWatermarkFilter(bmThumbnail, GlWatermarkFilter.Position.LEFT_TOP))
+                        .listener(new Mp4Composer.Listener() {
+
+                            @Override
+                            public void onProgress(double progress) {
+                                Log.d("RECORD", "Mp4Composer onProgress: " + progress);
+                            }
+
+                            @Override
+                            public void onCurrentWrittenVideoTime(long l) {
+
+                            }
+
+                            @Override
+                            public void onCompleted() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progress_card.setVisibility(View.GONE);
+                                        Log.d("RECORD", "onCompleted: ");
+                                        Constants.RECORDED_FILE_NAME = sticker_file.getAbsolutePath();
+                                        startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
+                                        finish();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onCanceled() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progress_card.setVisibility(View.GONE);
+                                        Log.d("RECORD", "Mp4Composer onCanceled: cancel");
+                                        startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
+                                        finish();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailed(final Exception exception) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progress_card.setVisibility(View.GONE);
+                                        Log.d("RECORD", "Mp4Composer onFailed: " + Log.getStackTraceString(exception));
+                                        startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
+                                        finish();
+                                    }
+                                });
+                            }
+                        }).start();
+            } else {
+                startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
+                finish();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
+
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float) maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float) maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return image;
+        } else {
+            return image;
+        }
+    }
+
 }
+
+
+
+
+

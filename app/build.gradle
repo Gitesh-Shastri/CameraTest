@@ -7,7 +7,7 @@ android {
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.example.cameratest"
-        minSdkVersion 19
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -35,11 +35,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.googlecode.mp4parser:isoparser:1.1.22'
 
-
-
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.google.android.exoplayer:exoplayer:2.7.2'
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.3'
     implementation ('com.arthenica:mobile-ffmpeg-full-gpl:4.3.1.LTS'){
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
@@ -54,4 +52,7 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation project(path: ':photoeditor')
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.github.MasayukiSuda:Mp4Composer-android:v0.4.1'
 }
