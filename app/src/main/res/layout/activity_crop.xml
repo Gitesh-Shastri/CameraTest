@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:keepScreenOn="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <com.example.cameratest.videocrop.cropview.window.CropVideoView
+                android:id="@+id/cropVideoView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+
+
+
+
+
+        <RelativeLayout
+            android:id="@+id/relProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorOpacity60"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/progressBarPercent"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_shape"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/circular_progress_bar" />
+
+            <TextView
+                android:id="@+id/tvCropProgress"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+
+                android:textColor="@color/colorApp" />
+
+            <TextView
+                android:id="@+id/tvProgressMessage"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/progressBarPercent"
+                android:layout_centerInParent="true"
+                android:text="Cropping video"
+                android:textSize="16sp"
+                android:textColor="@color/colorApp" />
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/llBottomPanel"
+            android:visibility="visible"
+            android:background="@color/colorOpacity60">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:minHeight="68dp"
+                android:weightSum="3">
+                <LinearLayout
+                    android:id="@+id/llCrop"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/ivCrop"
+                        android:layout_width="@dimen/dp32"
+                        android:layout_height="@dimen/dp32"
+                        app:srcCompat="@drawable/ic_crop"/>
+                    <TextView
+                        android:id="@+id/tvCrop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorTextWhite"
+                        android:text="@string/Crop"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/llPlayPause"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/ivPlayPause"
+                        android:layout_width="@dimen/dp32"
+                        android:layout_height="@dimen/dp32"
+                        app:srcCompat="@drawable/ic_play"/>
+                    <TextView
+                        android:id="@+id/tvPlayPause"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorTextWhite"
+                        android:text="@string/play"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/llDone"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/ivDone"
+                        android:layout_width="@dimen/dp32"
+                        android:layout_height="@dimen/dp32"
+                        app:srcCompat="@drawable/ic_check"/>
+                    <TextView
+                        android:id="@+id/tvDone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorTextWhite"
+                        android:text="@string/done"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                >
+
+                <LinearLayout
+                    android:id="@+id/llCropList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:padding="8dp">
+                    <LinearLayout
+                        android:id="@+id/llAspectCustom"
+                        android:layout_width="100dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="@dimen/dp32"
+                            android:layout_height="@dimen/dp32"
+                            app:srcCompat="@drawable/ic_crop_custom"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorTextWhite"
+                            android:text="@string/custom"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llAspectSquare"
+                        android:layout_width="100dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="@dimen/dp32"
+                            android:layout_height="@dimen/dp32"
+                            app:srcCompat="@drawable/ic_crop_square"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorTextWhite"
+                            android:text="@string/square"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llAspectPortrait"
+                        android:layout_width="100dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="@dimen/dp32"
+                            android:layout_height="@dimen/dp32"
+                            app:srcCompat="@drawable/ic_crop_portrait"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorTextWhite"
+                            android:text="@string/portrait"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llAspectLandscape"
+                        android:layout_width="100dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="@dimen/dp32"
+                            android:layout_height="@dimen/dp32"
+                            app:srcCompat="@drawable/ic_crop_landscape"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorTextWhite"
+                            android:text="@string/landscape"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llAspect4by3"
+                        android:layout_width="100dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="@dimen/dp32"
+                            android:layout_height="@dimen/dp32"
+                            app:srcCompat="@drawable/ic_crop_4_3"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorTextWhite"
+                            android:text="@string/_4_3"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llAspect16by9"
+                        android:layout_width="100dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="@dimen/dp32"
+                            android:layout_height="@dimen/dp32"
+                            app:srcCompat="@drawable/ic_crop_16_9"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorTextWhite"
+                            android:text="@string/_16_9"
+                            />
+                    </LinearLayout>
+                    
+                </LinearLayout>
+            </HorizontalScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:id="@+id/llSeekBottom">
+                <TextView
+                    android:id="@+id/tvProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_time"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/colorTextWhite"/>
+               <SeekBar
+                   android:id="@+id/seekBar"
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="match_parent"
+                   android:thumbTint="@color/colorTextWhite"
+                   android:progressTint="@color/colorTextWhite"/>
+
+
+                <TextView
+                    android:id="@+id/tvDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_time"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/colorTextWhite" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:id="@+id/bottomView"
+                android:visibility="gone"/>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llMore"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_opacity"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:layout_width="@dimen/dp32"
+                android:layout_height="@dimen/dp32"
+                app:srcCompat="@drawable/ic_three_dots_horizontal"
+                />
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+    <include
+        android:id="@+id/aspectMenu"
+        layout="@layout/view_aspect_ratio_menu"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

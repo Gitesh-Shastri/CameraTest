@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp32"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_medium">
+
+            <TextView
+                style="@style/PoppinsLight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textColor="@color/colorTextDark"
+                android:textSize="@dimen/text_16" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:background="@drawable/drawable_bg_border">
+
+                <EditText
+                    style="@style/PoppinsRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorTransparent"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/padding_medium"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="@dimen/text_16" />
+
+            </RelativeLayout>
+
+            <TextView
+                style="@style/PoppinsLight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="Display Image"
+                android:textColor="@color/colorTextDark"
+                android:textSize="@dimen/text_16" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:background="@drawable/drawable_bg_border">
+
+                <ImageView
+                    android:id="@+id/ivFrameSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvChooseFrame"
+                style="@style/PoppinsRegular"
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/drawable_bg_border_color"
+                android:gravity="center"
+                android:text="Choose"
+                android:textColor="@color/colorApp"
+                android:textSize="@dimen/text_14" />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorOpacity60"
+            android:id="@+id/relProgress"
+            android:visibility="gone">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+
+                />
+            <TextView
+                android:id="@+id/tvProcess"
+                style="@style/PoppinsBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_16" />
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:id="@+id/tvUpload"
+            style="@style/PoppinsRegular"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:background="@drawable/drawable_bg_border_color"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/margin_large"
+            android:text="Upload"
+            android:textColor="@color/colorApp"
+            android:textSize="@dimen/text_14" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

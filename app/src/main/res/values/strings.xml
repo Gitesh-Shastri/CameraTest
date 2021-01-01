@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">CameraTest</string>
+    <string name="please_wait">Please Wait...</string>
+    <string name="flash_not_supported">Flash not supported</string>
+    <string name="camera_initialization_issue_please_try_again">Camera initialization Issue, Please try again.</string>
+    <string name="discard_current_recording">Discard Current Recording</string>
+    <string name="next">Next</string>
+    <string name="Crop">Crop</string>
+    <string name="Filter">Filter</string>
+    <string name="Volume">Volume</string>
+    <string name="Recording">Recording</string>
+    <string name="Music">Music</string>
+    <string name="Rotate">Rotate</string>
+    <string name="play">Play</string>
+    <string name="done">Done</string>
+    <string name="continue_">Continue</string>
+
+
+    <string name="default_time">00:00</string>
+    <string name="custom">Custom</string>
+    <string name="square">Square</string>
+    <string name="portrait">Portrait</string>
+    <string name="landscape">Landscape</string>
+    <string name="_4_3">4:3</string>
+    <string name="_16_9">16:9</string>
+    <string name="Trim">Trim</string>
+    <string name="Text">Text</string>
+    <string name="Sticker">Sticker</string>
+    <string name="Sound">Sound</string>
+
+
+
+    <string name="minimum_ten_second">File can be minimum of 10 seconds.</string>
+    <string name="maximum_three_min">File can be maximum of 3 minutes.</string>
+    <string name="short_seconds">sec</string>
+    <string name="megabyte">MB</string>
+    <string name="kilobyte">KB</string>
+    <string name="toast_cannot_retrieve_selected_video">Could not retrieve selected video</string>
+    <string name="trimming_your_video">Trimming Your video</string>
+    <string name="downloading_track">Downloading Track</string>
+    <string name="my_track">My Track</string>
+    <string name="trim">Trim</string>
+    <string name="processing_your_video">Processing Your Track</string>
+
+</resources>

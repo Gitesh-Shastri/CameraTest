@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_small">
+        <RelativeLayout
+            android:id="@+id/relBack"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:background="@color/colorApp"
+            android:padding="@dimen/padding_small">
+            <ImageView
+                android:padding="@dimen/padding_small"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_close" />
+        </RelativeLayout>
+        <TextView
+            android:layout_marginTop="@dimen/margin_small"
+            style="@style/PoppinsSemiBold"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_track"
+            android:textColor="@color/colorTextDark"
+            android:textSize="@dimen/text_16" />
+        <RelativeLayout
+            android:id="@+id/relTrim"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:background="@color/colorApp">
+            <ImageView
+                android:padding="@dimen/padding_small"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_check" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llAudioTrim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_small">
+
+        <TextView
+            android:layout_marginTop="@dimen/margin_small"
+            style="@style/PoppinsSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trim"
+            android:textColor="@color/colorTextDark"
+            android:textSize="@dimen/text_12" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvAudioTrimStart"
+                style="@style/PoppinsRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/colorTextDark"
+                android:textSize="@dimen/text_12" />
+
+            <com.innovattic.rangeseekbar.RangeSeekBar
+                android:id="@+id/rangeSeekbarAudio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:rsb_trackColor="@color/line_color_gray"
+                app:rsb_trackThickness="1dp"
+                app:rsb_trackSelectedColor="@color/colorApp"
+                app:rsb_maxThumbDrawable="@drawable/ic_trimmer_thumb"
+                app:rsb_minThumbDrawable="@drawable/ic_trimmer_thumb" />
+
+            <TextView
+                android:id="@+id/tvAudioTrimEnd"
+                style="@style/PoppinsRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:30"
+                android:textColor="@color/colorTextDark"
+                android:textSize="@dimen/text_12" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llAudioProgress"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50"
+        android:background="@color/colorBlack"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_small">
+
+        <RelativeLayout
+            android:id="@+id/relPlayPauseAudio"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_small">
+
+            <ImageView
+                android:id="@+id/ivPlayPauseAudio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_play" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvSeekAudioStart"
+            style="@style/PoppinsRegular"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="@dimen/text_12" />
+
+        <SeekBar
+            android:layout_marginStart="@dimen/padding_small"
+            android:layout_marginEnd="@dimen/padding_small"
+            android:id="@+id/seekBarAudio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:progress="0"
+            android:progressTint="@color/colorWhite"
+            android:thumbTint="@color/colorWhite" />
+
+        <TextView
+            android:id="@+id/tvSeekAudioEnd"
+            style="@style/PoppinsRegular"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="@dimen/text_12" />
+    </LinearLayout>
+
+</LinearLayout>
