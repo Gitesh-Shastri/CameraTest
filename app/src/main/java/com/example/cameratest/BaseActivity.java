@@ -24,7 +24,7 @@ import java.util.concurrent.Callable;
 
 public class BaseActivity extends AppCompatActivity {
     FrameLayout baseContainer;
-    LinearLayout llProgress;
+    LinearLayout llProgress, player_ll;
     ImageView ivPlayPause;
     TextView tvStart,tvEnd;
     SeekBar mediaPlayerSeekBar;
@@ -34,6 +34,7 @@ public class BaseActivity extends AppCompatActivity {
     ProgressBar progressBarPercent;
     TextView tvProgress, tvProgressMessage;
     LinearLayout llTextureView;
+    ImageView btnDone;
 
     Callable<Void> mediaPlayerPreparedCallback,mediaPlayerPauseListener,mediaPlayerPlayListener;
     @Override
@@ -48,6 +49,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void declaration() {
+        btnDone   = findViewById(R.id.btnDone);
+        player_ll = findViewById(R.id.player_ll);
         baseContainer = findViewById(R.id.baseContainer);
         llProgress = findViewById(R.id.llProgress);
         ivPlayPause = findViewById(R.id.ivPlayPause);
@@ -81,6 +84,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void updateProgressVisibility(boolean visible) {
+        player_ll.setVisibility(visible ? View.VISIBLE : View.GONE);
         llProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
     public void setShowProgressMedia(boolean showProgress) {
@@ -123,6 +127,7 @@ public class BaseActivity extends AppCompatActivity {
                 isMediPlaying = false;
                 ivPlayPause.setImageResource(R.drawable.ic_play);
                 if (showProgress)
+                    player_ll.setVisibility(View.GONE);
                     llProgress.setVisibility(View.GONE);
                 mediaPlayerSeekBar.setProgress(0);
 
@@ -152,6 +157,7 @@ public class BaseActivity extends AppCompatActivity {
             if (rootMediaPlayer != null) {
                 ivPlayPause.setImageResource(R.drawable.ic_pause);
                 if (showProgress)
+                    player_ll.setVisibility(View.GONE);
                     llProgress.setVisibility(View.VISIBLE);
                 rootMediaPlayer.start();
                 setMediaProgress(1);
@@ -164,6 +170,10 @@ public class BaseActivity extends AppCompatActivity {
         } catch (Exception e) {
             Lib.logError(e);
         }
+    }
+
+    public void showPlayerLayout() {
+        player_ll.setVisibility(View.VISIBLE);
     }
 
     public void pauseMediaPlayer() {
@@ -353,7 +363,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void updateTime(String time) {
 
+    }
 
 
     @Override

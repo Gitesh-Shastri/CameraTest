@@ -32,52 +32,8 @@
                 android:orientation="horizontal">
 
             </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50"
-                android:background="@color/colorBlack"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_small">
-
-                <ImageView
-                    android:id="@+id/ivPlayPause"
-                    android:layout_width="@dimen/dp40"
-                    android:layout_height="@dimen/dp40"
-                    app:srcCompat="@drawable/ic_play" />
-
-                <TextView
-                    android:id="@+id/tvStart"
-                    style="@style/PoppinsRegular"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:text="00:00"
-                    android:textColor="@color/colorTextWhite"
-                    android:textSize="@dimen/text_12" />
-
-                <SeekBar
-                    android:id="@+id/mediaPlayerSeekBar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:progress="0"
-                    android:progressTint="@color/colorWhite"
-                    android:thumbTint="@color/colorWhite" />
-
-                <TextView
-                    android:id="@+id/tvEnd"
-                    style="@style/PoppinsRegular"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:text="00:00"
-                    android:textColor="@color/colorTextWhite"
-                    android:textSize="@dimen/text_12" />
-            </LinearLayout>
-
-
         </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/relProgress"
             android:layout_width="match_parent"
@@ -117,6 +73,91 @@
                 android:textColor="@color/colorWhite" />
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/player_ll"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlack"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_small">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="70dp">
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:layout_above="@id/ivPlayPause"
+                    android:id="@+id/tvStart"
+                    style="@style/PoppinsRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    style="@style/PoppinsRegular"
+                    android:layout_above="@id/ivPlayPause"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="@dimen/text_12"
+                    android:layout_toEndOf="@id/tvStart"
+                    android:id="@+id/slash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" / "
+                    />
+
+                <TextView
+                    android:layout_toEndOf="@id/slash"
+                    android:layout_above="@id/ivPlayPause"
+                    android:id="@+id/tvEnd"
+                    style="@style/PoppinsRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="@dimen/text_12" />
+
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/ivPlayPause"
+                    android:layout_width="@dimen/dp40"
+                    android:layout_height="@dimen/dp40"
+                    app:srcCompat="@drawable/ic_play" />
+
+            </RelativeLayout>
+
+            <SeekBar
+                android:layout_marginStart="5dp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/mediaPlayerSeekBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:progress="0"
+                android:progressTint="@color/colorWhite"
+                android:thumbTint="@color/colorWhite" />
+
+            <ImageView
+                android:id="@+id/btnDone"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                style="@style/PoppinsRegular"
+                android:layout_margin="@dimen/margin_small"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/colorTextWhite"
+                android:gravity="center"
+                android:textSize="@dimen/text_12"
+                android:src="@drawable/ic_check"/>
+
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

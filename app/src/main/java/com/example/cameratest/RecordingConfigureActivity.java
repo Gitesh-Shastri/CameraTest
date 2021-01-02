@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -12,6 +13,7 @@ import android.graphics.Typeface;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -55,6 +57,12 @@ import ja.burhanrashid52.photoeditor.PhotoEditorView;
 import ja.burhanrashid52.photoeditor.TextStyleBuilder;
 import ja.burhanrashid52.photoeditor.ViewType;
 
+import com.arthenica.mobileffmpeg.Config;
+import com.arthenica.mobileffmpeg.FFmpeg;
+
+import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_CANCEL;
+import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS;
+
 public class RecordingConfigureActivity extends BaseActivity implements View.OnClickListener, OnPhotoEditorListener, EmojiBSFragment.EmojiListener {
     CoordinatorLayout coordinatorLayout;
     TextureView textureView;
@@ -72,13 +80,13 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
     ImageView ivClose, ivCrop, ivRotate, ivColor, ivTrim,ivVolume, ivLeftRotate, ivRightRotate;
     TextView tvCrop, tvRotate, tvColor, tvVolume, tvTrim;
     LinearLayout llCrop, llRotate, llColor, llVolume, llTrim;
-    TextView btnDone;
 
     PhotoEditor mPhotoEditor;
     PhotoEditorView mPhotoEditorView;
     List<String> colorEffectNameList = new ArrayList<>();
     List<String> colorEffectList = new ArrayList<>();
 
+    Button volume_done;
     String colorEffect = "";
     int lastColorEffectSelected = 0;
     int volume1 = 50, volume2 = 50;
@@ -145,6 +153,7 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
 
     private void declaration() {
         try {
+            volume_done       = findViewById(R.id.volume_done);
             progress_card     = findViewById(R.id.progress_card);
             progress_bar      = findViewById(R.id.progress_bar);
             llText            = findViewById(R.id.llText);
@@ -161,7 +170,6 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
             mediaSoundSeekBar = findViewById(R.id.mediaSoundSeekBar);
 
             ivClose = findViewById(R.id.ivClose);
-            btnDone = findViewById(R.id.btnDone);
 
             ivCrop = findViewById(R.id.ivCrop);
             ivRotate = findViewById(R.id.ivRotate);
@@ -348,13 +356,21 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                     mEmojiBSFragment.show(getSupportFragmentManager(), mEmojiBSFragment.getTag());
                 }
             });
+
+            volume_done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateFilterContainerView(4);
+                }
+            });
+
+            showPlayerLayout();
         } catch (Exception e) {
             Lib.logError(e);
         }
     }
 
     boolean isRunningNew = false;
-
 
     private void setupMedia() {
         try {
@@ -394,7 +410,7 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                 });
 //                setRecordingConfigureDelayCaseHandle(true);
             }
-            setShowProgressMedia(true);
+            setShowProgressMedia(false);
             setMediaPreparedCallBack(new Callable<Void>() {
                 @Override
                 public Void call() throws Exception {
@@ -589,7 +605,8 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
     private void showSystemUI() {
         try {
             llContainer.setVisibility(View.GONE);
-            updateProgressVisibility(false);
+            player_ll.setVisibility(View.GONE);
+//            updateProgressVisibility(false);
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -663,14 +680,16 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                 case R.id.textureView:
                     if (llContainer.getVisibility() == View.VISIBLE && !isEditorTrayOpened) {
                         llContainer.setVisibility(View.GONE);
-                        updateProgressVisibility(false);
+                        player_ll.setVisibility(View.GONE);
+//                        updateProgressVisibility(false);
                         isRunning = false;
                     } else {
                         if (!isRunning) {
                             isRunning = true;
                             hideSystemUI();
                             llContainer.setVisibility(View.VISIBLE);
-                            updateProgressVisibility(true);
+                            player_ll.setVisibility(View.VISIBLE);
+//                            updateProgressVisibility(true);
                             hideSystemUI();
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -678,7 +697,8 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                                 public void run() {
                                     if (!isEditorTrayOpened) {
                                         llContainer.setVisibility(View.GONE);
-                                        updateProgressVisibility(false);
+                                        player_ll.setVisibility(View.GONE);
+//                                        updateProgressVisibility(false);
                                         isRunning = false;
                                     }
                                 }
@@ -689,14 +709,16 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                 case R.id.relContainer:
                     if (llContainer.getVisibility() == View.VISIBLE && !isEditorTrayOpened) {
                         llContainer.setVisibility(View.GONE);
-                        updateProgressVisibility(false);
+                        player_ll.setVisibility(View.GONE);
+//                        updateProgressVisibility(false);
                         isRunning = false;
                     } else {
                         if (!isRunning) {
                             isRunning = true;
                             hideSystemUI();
                             llContainer.setVisibility(View.VISIBLE);
-                            updateProgressVisibility(true);
+                            player_ll.setVisibility(View.VISIBLE);
+//                            updateProgressVisibility(true);
                             hideSystemUI();
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -704,7 +726,8 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                                 public void run() {
                                     if (!isEditorTrayOpened) {
                                         llContainer.setVisibility(View.GONE);
-                                        updateProgressVisibility(false);
+                                        player_ll.setVisibility(View.GONE);
+//                                        updateProgressVisibility(false);
                                         isRunning = false;
                                     }
                                 }
@@ -773,6 +796,7 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                         ivVolume.setImageResource(R.drawable.ic_volume_control);
                         tvVolume.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                         llVolumeMatch.setVisibility(View.VISIBLE);
+                        player_ll.setVisibility(View.GONE);
                         break;
 
 
@@ -1064,14 +1088,20 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
         mPhotoEditor.addEmoji(emojiUnicode);
     }
 
+    private boolean isLoading = false;
+    private File file, sticker_file;
+
     private void saveImage() {
+        Log.e("testenter","saveimage");
+        isLoading = true;
+
         File sdCard = Environment.getExternalStorageDirectory();
         File dir = new File(sdCard.getAbsolutePath() + "/limelite/images");
 
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        File file = new File(dir, "/" + System.currentTimeMillis() + ".png");
+        file = new File(dir, "/" + System.currentTimeMillis() + ".png");
         try {
             file.createNewFile();
             mPhotoEditor.clearHelperBox();
@@ -1082,7 +1112,7 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
             try {
                 int width = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
                 int height = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
-                drawing = resize(mPhotoEditorView.getDrawingCache(), width, height);
+                drawing = mPhotoEditorView.getDrawingCache();
                 retriever.release();
                 if (width > height)
                     Constants.IS_PORTRAIT = false;
@@ -1096,7 +1126,7 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                 Lib.logError(e);
             }
             if (drawing != null) {
-                Bitmap bitmap = BitmapUtil.removeTransparency(drawing, drawing.getWidth(), drawing.getHeight());
+                Bitmap bitmap = removeTransparency(drawing, drawing.getWidth(), drawing.getHeight());
                 try {
                     FileOutputStream out = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -1109,63 +1139,14 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                final File sticker_file = new File(dir, "/sticker_file" + System.currentTimeMillis() + ".mp4");
-                Bitmap bmThumbnail = BitmapFactory.decodeFile(file.getAbsolutePath());
-                progress_card.setVisibility(View.VISIBLE);
-                new Mp4Composer(Constants.RECORDED_FILE_NAME, sticker_file.getAbsolutePath())
-                        .filter(new GlWatermarkFilter(bmThumbnail, GlWatermarkFilter.Position.LEFT_TOP))
-                        .listener(new Mp4Composer.Listener() {
+                if (file.length() == 0) {
+                    startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
+                    finish();
+                    return;
+                }
+                sticker_file = new File(dir, "/sticker_file" + System.currentTimeMillis() + ".mp4");
 
-                            @Override
-                            public void onProgress(double progress) {
-                                Log.d("RECORD", "Mp4Composer onProgress: " + progress);
-                            }
-
-                            @Override
-                            public void onCurrentWrittenVideoTime(long l) {
-
-                            }
-
-                            @Override
-                            public void onCompleted() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progress_card.setVisibility(View.GONE);
-                                        Log.d("RECORD", "onCompleted: ");
-                                        Constants.RECORDED_FILE_NAME = sticker_file.getAbsolutePath();
-                                        startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
-                                        finish();
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onCanceled() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progress_card.setVisibility(View.GONE);
-                                        Log.d("RECORD", "Mp4Composer onCanceled: cancel");
-                                        startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
-                                        finish();
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onFailed(final Exception exception) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progress_card.setVisibility(View.GONE);
-                                        Log.d("RECORD", "Mp4Composer onFailed: " + Log.getStackTraceString(exception));
-                                        startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
-                                        finish();
-                                    }
-                                });
-                            }
-                        }).start();
+                new DownloadFilesTask().execute();
             } else {
                 startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
                 finish();
@@ -1173,6 +1154,86 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private class DownloadFilesTask extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress_card.setVisibility(View.VISIBLE);
+        }
+
+        protected Integer doInBackground(Void... voids) {
+            int rc = FFmpeg.execute("-i "+Constants.RECORDED_FILE_NAME+" -i "+file.getAbsolutePath()+" -filter_complex overlay=0:main_h-overlay_h " + sticker_file.getAbsolutePath());
+            return rc;
+        }
+
+        protected void onPostExecute(Integer rc) {
+            if (rc == RETURN_CODE_SUCCESS) {
+                progress_card.setVisibility(View.GONE);
+                Log.e(Config.TAG, "Command execution completed successfully.");
+                startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
+                finish();
+            } else if (rc == RETURN_CODE_CANCEL) {
+                progress_card.setVisibility(View.GONE);
+                Log.e(Config.TAG, "Command execution cancelled by user.");
+            } else {
+                progress_card.setVisibility(View.GONE);
+                Log.e(Config.TAG, String.format("Command execution failed with rc=%d and the output below.", rc));
+                Config.printLastCommandOutput(Log.INFO);
+            }
+        }
+    }
+
+    private Bitmap removeTransparency(Bitmap source, int width, int height) {
+        try {
+            int firstX = 0, firstY = 0;
+            int lastX = width;
+            int lastY = height;
+            int[] pixels = new int[width * height];
+            source.getPixels(pixels, 0, width, 0, 0, width, height);
+            loop:
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (pixels[x + (y * width)] != Color.TRANSPARENT) {
+                        firstX = x;
+                        break loop;
+                    }
+                }
+            }
+            loop:
+            for (int y = 0; y < height; y++) {
+                for (int x = firstX; x < height; x++) {
+                    if (pixels[x + (y * width)] != Color.TRANSPARENT) {
+                        firstY = y;
+                        break loop;
+                    }
+                }
+            }
+            loop:
+            for (int x = width - 1; x >= firstX; x--) {
+                for (int y = height - 1; y >= firstY; y--) {
+                    if (pixels[x + (y * width)] != Color.TRANSPARENT) {
+                        lastX = x;
+                        break loop;
+                    }
+                }
+            }
+            loop:
+            for (int y = height - 1; y >= firstY; y--) {
+                for (int x = width - 1; x >= firstX; x--) {
+                    if (pixels[x + (y * width)] != Color.TRANSPARENT) {
+                        lastY = y;
+                        break loop;
+                    }
+                }
+            }
+            return Bitmap.createBitmap(source, 0, 0, width, height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {

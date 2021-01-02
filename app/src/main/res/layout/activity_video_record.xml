@@ -393,11 +393,47 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <View
-                android:id="@+id/viewBottom"
+            <RelativeLayout
+                android:id="@+id/seconds_timer"
+                android:background="#E2000000"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp40"
-                android:visibility="gone" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:padding="10dp"
+                    android:layout_toStartOf="@id/thirty_seconds"
+                    android:id="@+id/fifteen_seconds"
+                    android:textColor="@color/grey_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15s"
+                    />
+
+                <TextView
+                    android:padding="10dp"
+                    android:layout_marginStart="10dp"
+                    android:textStyle="bold"
+                    android:id="@+id/thirty_seconds"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30s"
+                    />
+
+                <TextView
+                    android:padding="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/thirty_seconds"
+                    android:id="@+id/sixty_seconds"
+                    android:textColor="@color/grey_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="60s"
+                    />
+
+            </RelativeLayout>
+
         </LinearLayout>
 
 

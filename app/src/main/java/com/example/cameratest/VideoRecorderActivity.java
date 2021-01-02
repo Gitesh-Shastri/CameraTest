@@ -91,7 +91,7 @@ public class VideoRecorderActivity extends BaseActivity implements
     TextView tvTrackName;
 
     private ImageButton btnClose;
-    RelativeLayout relMedia, relUpload, relDone, relView, relCancel;
+    RelativeLayout relMedia, relUpload, relDone, relView, relCancel, seconds_timer;
     LinearLayout llFlip, llFlash, llTimer, llExpand, llSpeed, llColor, llClose, llSpeedMeter, llColorList, llCountDownTimer, llBottoms;
     TextView tv_minus_2, tv_minus_1, tv_0, tv_1, tv_2, tvTimer, tvDoneTimer;
     private Button btnResumeOrPause;
@@ -345,6 +345,7 @@ public class VideoRecorderActivity extends BaseActivity implements
 
     private void declaration() {
         try {
+            seconds_timer = findViewById(R.id.seconds_timer);
             mPreview = findViewById(R.id.camera_preview);
             progress_bar = findViewById(R.id.progress_bar);
             relCountDown = findViewById(R.id.relCountDown);
@@ -384,11 +385,7 @@ public class VideoRecorderActivity extends BaseActivity implements
             tv_2 = findViewById(R.id.tv_2);
 
 
-            viewBottom = findViewById(R.id.viewBottom);
             progressBarLoading = findViewById(R.id.progressBarLoading);
-
-            if (isNavigationBarAvailable())
-                viewBottom.setVisibility(View.VISIBLE);
 
             if (!Constants.FILE_PATH_TO_BE_DOWNLOADED.equalsIgnoreCase("")) {
                 tvTrackName.setText(Constants.FILE_DOWNLOADED_TITLE);
@@ -727,6 +724,7 @@ public class VideoRecorderActivity extends BaseActivity implements
 
                 relUpload.setVisibility(View.GONE);
                 relMedia.setVisibility(View.GONE);
+                seconds_timer.setVisibility(View.GONE);
 
                 relDone.setVisibility(View.VISIBLE);
                 relView.setVisibility(View.VISIBLE);
