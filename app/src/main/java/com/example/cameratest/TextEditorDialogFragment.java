@@ -49,7 +49,8 @@ public class TextEditorDialogFragment extends DialogFragment {
     private Typeface mWonderFont,mWonderFont1;
     List<Typeface> mfonts;
     Typeface fonting;
-    TextView button_style,highlight_text,iv_back,iv_tick;
+    TextView button_style,highlight_text;
+    ImageView iv_back,iv_tick;
     public LinkedHashMap<String, Typeface> fonts;
     int fontcouter =1;
     int fonttypecounter =1;

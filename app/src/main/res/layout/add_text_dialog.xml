@@ -9,18 +9,19 @@
 
     <LinearLayout
         android:id="@+id/ll_heading"
-        android:background="#000000"
+        android:background="@color/black"
         android:padding="5dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
-        <TextView
+        android:layout_height="45dp"
+        android:weightSum="10">
+        <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
+            android:layout_width="24dp"
             android:padding="9dp"
             android:layout_height="match_parent"
-            android:text="Cancel"
-            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:src="@drawable/ic_back_arrow_3"
             android:layout_gravity="center" />
 
         <TextView
@@ -36,13 +37,13 @@
             android:textStyle="bold"
             android:textSize="16sp"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/iv_tick"
-            android:layout_width="wrap_content"
+            android:layout_width="24dp"
             android:layout_height="match_parent"
             android:padding="9dp"
-            android:text="Save"
-            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:src="@drawable/ic_tick_2"
             android:layout_gravity="center"/>
 
     </LinearLayout>
@@ -80,7 +81,6 @@
     </RelativeLayout>
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/button_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,8 +97,25 @@
         android:textColor="@color/white"
         android:textSize="15sp" />
 
+    <TextView
+        android:id="@+id/highlight_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/rounded_border_text_view"
+        android:text="Aa"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="9sp" />
+
     <Button
-        android:visibility="gone"
         android:id="@+id/alignment"
         android:layout_marginLeft="10dp"
         android:layout_width="50dp"
@@ -153,35 +170,16 @@
             tools:background="@color/black"
             tools:listitem="@layout/font_family_item_view"/>
 
-        <TextView
-            android:layout_below="@+id/add_font_familyrecyclerview"
-            android:id="@+id/highlight_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:background="@drawable/rounded_border_text_view"
-            android:text="Aa"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="9sp" />
-
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_toEndOf="@+id/highlight_text"
             android:id="@+id/add_text_color_picker_recycler_view"
-            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="visible"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:layout_below="@+id/add_font_familyrecyclerview"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:background="@color/transparent"
+            tools:background="@color/black"
             tools:listitem="@layout/color_picker_item_list" />
     </RelativeLayout>
     </RelativeLayout>
