@@ -412,10 +412,9 @@
                 <TextView
                     android:padding="10dp"
                     android:layout_marginStart="10dp"
-                    android:textStyle="bold"
                     android:id="@+id/thirty_seconds"
                     android:layout_centerHorizontal="true"
-                    android:textColor="@color/white"
+                    android:textColor="@color/grey_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="30s"

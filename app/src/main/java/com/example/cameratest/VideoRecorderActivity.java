@@ -8,10 +8,12 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.SurfaceTexture;
+import android.graphics.Typeface;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
 import android.media.CamcorderProfile;
@@ -88,7 +90,7 @@ public class VideoRecorderActivity extends BaseActivity implements
     boolean first, firstCopy;
     String type = "";
 
-    TextView tvTrackName;
+    TextView tvTrackName, thirty_seconds, fifteen_seconds, sixty_seconds;
 
     private ImageButton btnClose;
     RelativeLayout relMedia, relUpload, relDone, relView, relCancel, seconds_timer;
@@ -384,6 +386,9 @@ public class VideoRecorderActivity extends BaseActivity implements
             tv_1 = findViewById(R.id.tv_1);
             tv_2 = findViewById(R.id.tv_2);
 
+            thirty_seconds = findViewById(R.id.thirty_seconds);
+            fifteen_seconds = findViewById(R.id.fifteen_seconds);
+            sixty_seconds = findViewById(R.id.sixty_seconds);
 
             progressBarLoading = findViewById(R.id.progressBarLoading);
 
@@ -406,6 +411,46 @@ public class VideoRecorderActivity extends BaseActivity implements
                 });
                 setMediaPlayer(Constants.FOLDER_PATH_MEDIA_DOWNLOAD + "/" + Constants.FILE_DOWNLOADED_NAME, false);
             }
+
+            thirty_seconds.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MAX_VIDEO_LENGTH = 30 * 1000;
+                    fifteen_seconds.setTextColor(Color.parseColor("#8C8C8C"));
+                    fifteen_seconds.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                    sixty_seconds.setTextColor(Color.parseColor("#8C8C8C"));
+                    sixty_seconds.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                    thirty_seconds.setTextColor(Color.parseColor("#ffffff"));
+                    thirty_seconds.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                }
+            });
+
+            fifteen_seconds.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MAX_VIDEO_LENGTH = 15 * 1000;
+                    fifteen_seconds.setTextColor(Color.parseColor("#ffffff"));
+                    fifteen_seconds.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                    sixty_seconds.setTextColor(Color.parseColor("#8C8C8C"));
+                    sixty_seconds.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                    thirty_seconds.setTextColor(Color.parseColor("#8C8C8C"));
+                    thirty_seconds.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                }
+            });
+
+            sixty_seconds.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MAX_VIDEO_LENGTH = 60 * 1000;
+                    fifteen_seconds.setTextColor(Color.parseColor("#8C8C8C"));
+                    fifteen_seconds.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                    sixty_seconds.setTextColor(Color.parseColor("#ffffff"));
+                    sixty_seconds.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                    thirty_seconds.setTextColor(Color.parseColor("#8C8C8C"));
+                    thirty_seconds.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                }
+            });
+
             setLayouts();
         } catch (Exception e) {
             e.printStackTrace();
@@ -1491,7 +1536,6 @@ public class VideoRecorderActivity extends BaseActivity implements
                     Constants.RECORDED_FILE_LENGTH = (int) timeInMillisec;
                         Intent intent = new Intent(VideoRecorderActivity.this, TrimmerActivity.class);
                         startActivity(intent);
-                        finish();
 //                    }
 
 

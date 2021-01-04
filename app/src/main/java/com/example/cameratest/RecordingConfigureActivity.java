@@ -660,7 +660,6 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
                 case R.id.llTrim:
                     Intent intent = new Intent(RecordingConfigureActivity.this, TrimmerActivity.class);
                     startActivity(intent);
-                    finish();
                     break;
                 case R.id.llVolume:
                     updateFilterContainerView(4);
@@ -1171,6 +1170,7 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
 
         protected void onPostExecute(Integer rc) {
             if (rc == RETURN_CODE_SUCCESS) {
+                Constants.RECORDED_FILE_NAME = sticker_file.getAbsolutePath();
                 progress_card.setVisibility(View.GONE);
                 Log.e(Config.TAG, "Command execution completed successfully.");
                 startActivity(new Intent(RecordingConfigureActivity.this, UploadVideoActivity.class));
