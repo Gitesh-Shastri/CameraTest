@@ -1,6 +1,7 @@
 package com.example.cameratest;
 
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.cameratest.videoTrimmer.view.TimeLineView;
 
 import java.util.concurrent.Callable;
 
@@ -48,7 +51,10 @@ public class BaseActivity extends AppCompatActivity {
         declaration();
     }
 
+    private TimeLineView mTimeLineView;
+
     private void declaration() {
+        mTimeLineView = ((TimeLineView) findViewById(R.id.timeLineView));
         btnDone   = findViewById(R.id.btnDone);
         player_ll = findViewById(R.id.player_ll);
         baseContainer = findViewById(R.id.baseContainer);
@@ -152,6 +158,7 @@ public class BaseActivity extends AppCompatActivity {
     public void startMediaPlayer() {
         try {
             isMediPlaying = true;
+            mTimeLineView.setVideo(Uri.parse(lastFilePath));
 //            if (llLoading.getVisibility() == View.VISIBLE)
 //                setLoadingVisible(false);
             if (rootMediaPlayer != null) {

@@ -41,6 +41,7 @@ import com.daasuu.mp4compose.composer.Mp4Composer;
 import com.daasuu.mp4compose.filter.GlFilterGroup;
 import com.daasuu.mp4compose.filter.GlWatermarkFilter;
 import com.example.cameratest.videoTrimmer.view.ProgressBarView;
+import com.example.cameratest.videoTrimmer.view.TimeLineView;
 import com.example.cameratest.videocrop.VideoCropActivity;
 
 import java.io.File;
@@ -153,6 +154,7 @@ public class RecordingConfigureActivity extends BaseActivity implements View.OnC
 
     private void declaration() {
         try {
+
             volume_done       = findViewById(R.id.volume_done);
             progress_card     = findViewById(R.id.progress_card);
             progress_bar      = findViewById(R.id.progress_bar);
